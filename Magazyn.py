@@ -1,11 +1,11 @@
-items = [{"Name" : "mleko","Quantity": 100,"Unit": "litr","Unit_price": 2.40},
-        {"Name" : "cukier","Quantity": 150,"Unit": "kg","Unit_price": 3.60},
-        {"Name" : "chleb","Quantity": 50,"Unit": "szt","Unit_price": 4.50}]
+items = [{"Name" : "mleko","Quantity": 10,"Unit": "litr","Unit_price": 2},
+        {"Name" : "cukier","Quantity": 10,"Unit": "kg","Unit_price": 3},
+        {"Name" : "chleb","Quantity": 10,"Unit": "szt","Unit_price": 5}]
 
 sort_items = sorted(items, key=lambda x: (x['Name']))
 sum_list=[]
-sum_price = sum(sum_list)
 div = 0
+
 for i in items:     
     div = i["Quantity"] * i["Unit_price"]
     sum_list.append (div)
@@ -42,7 +42,7 @@ while True:
     resp = input("WYBIERZ: ")
     if  resp == "show":
         get_items(sort_items)
-        print (f"\t\t\tRAZEM (PLN) {sum_price}")
+        print (f"\t\t\tRAZEM KOSZTY(PLN) {sum_price}")
         continue
     elif resp == "add":
             name = input ("NAZWA ARTYKUŁU: ")
@@ -50,10 +50,9 @@ while True:
             unit = input ("JEDNOSTKA: ")
             price = float(input ("CENA: "))
             add_items (name, quantity, unit, price)
-            for i in items:
-                div = i["Quantity"] * i["Unit_price"]
-                sum_list.append (div)
-                sum_price = sum(sum_list)
+            div = quantity * price
+            sum_list.append (div)
+            sum_price = sum(sum_list)
             continue
     elif  resp == "sell":
             sell_name = input ("Co sprzedajemy?: ")
