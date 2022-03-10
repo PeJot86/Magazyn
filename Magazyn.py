@@ -4,13 +4,32 @@ items = [{"Name" : "mleko","Quantity": 10,"Unit": "litr","Unit_price": 2},
 
 sort_items = sorted(items, key=lambda x: (x['Name']))
 sum_list=[] #lista kosztów 
-sold_items = [] #lista sprzedanych tow.
+sold_list = [] #lista sprzedanych tow.
+sub_list = [] #lista zysków
+profit = 0
+cost = 0
 
 def costs_items (items):
+    global cost
     for i in items:
         sum_list.append (i["Quantity"] * i["Unit_price"])
-    print (f"Koszt zakupu towarów to: {sum(sum_list)} PLN")
+        cost = sum(sum_list)
+    print (f"Koszt zakupu towarów to: {cost} PLN")
     sum_list.clear()
+
+def get_income (sold_list):
+    global profit
+    for i in sold_list:
+        sub_list.append (i["Quantity"] * i["Unit_price"])
+        profit = sum(sub_list)
+    print (f"Zyski uzyskane ze sprzedaży towarów to: {profit} PLN")
+    sub_list.clear()
+
+def show_revenue ():
+    global profit
+    global cost
+    revenue = profit - cost
+    print (f"Bilans Twoich zysków to: {revenue}")
 
 def get_items (sort_items):
     sort_items = sorted(items, key=lambda x: (x['Name']))
@@ -26,13 +45,12 @@ def add_items (name, quantity, unit, price):
     print (f"\nDODAŁEM: {name}")
 
 def sell_items (sell_name, sell_quantity):
-    quant_numb = 0
     for i in items:
         if  i['Name'] == sell_name:
             quant_numb = i['Quantity']
             sell_quant_sum = quant_numb - sell_quantity
             i['Quantity'] = sell_quant_sum
-            sold_items.append (f"Sprzedaję {sell_quantity} {sell_name}, pozostało {sell_quant_sum}")
+            sold_list.append ({"Name": sell_name, "Quantity" : sell_quantity, "Unit" : i["Unit"], "Unit_price" : i["Unit_price"]})
             print (f"Sprzedaję {sell_quantity} {sell_name}, pozostało {sell_quant_sum}")
             
 if __name__ == "__main__":
@@ -66,6 +84,8 @@ while True:
             continue
     elif resp == "b":
             costs_items (items)
+            get_income (sold_list)
+            show_revenue ()
     elif resp == "end":
             print ("Zamykam... Do zobaczenia! ;)")
             break
