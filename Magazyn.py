@@ -1,15 +1,16 @@
 items = [{"Name" : "mleko","Quantity": 10,"Unit": "litr","Unit_price": 2},
-        {"Name" : "cukier","Quantity": 10,"Unit": "kg","Unit_price": 3},
+        {"Name" : "cukier","Quantity": 10,"Unit": "kg","Unit_price": 4},
         {"Name" : "chleb","Quantity": 10,"Unit": "szt","Unit_price": 5}]
 
 sort_items = sorted(items, key=lambda x: (x['Name']))
-sum_list=[]
-div = 0
+sum_list=[] #lista kosztów 
+sold_items = [] #lista sprzedanych tow.
 
-for i in items:     
-    div = i["Quantity"] * i["Unit_price"]
-    sum_list.append (div)
-    sum_price = sum(sum_list)
+def costs_items (items):
+    for i in items:
+        sum_list.append (i["Quantity"] * i["Unit_price"])
+    print (f"Koszt zakupu towarów to: {sum(sum_list)} PLN")
+    sum_list.clear()
 
 def get_items (sort_items):
     sort_items = sorted(items, key=lambda x: (x['Name']))
@@ -31,28 +32,25 @@ def sell_items (sell_name, sell_quantity):
             quant_numb = i['Quantity']
             sell_quant_sum = quant_numb - sell_quantity
             i['Quantity'] = sell_quant_sum
+            sold_items.append (f"Sprzedaję {sell_quantity} {sell_name}, pozostało {sell_quant_sum}")
             print (f"Sprzedaję {sell_quantity} {sell_name}, pozostało {sell_quant_sum}")
-
+            
 if __name__ == "__main__":
     print ("\nWitaj w menadżerze Twojego Magazynu. Co chciałbyś zrobić?")     
 while True:  
     print("\n--------------------------------------------------------------------")
-    print ("MENU:\t|show=pokaż|\t|add=dodaj|\t|sell=sprzedaj|\t\t|end=wyjdż|")
+    print ("MENU:|show=pokaż||add=kup||sell=sprzedaj||b=bilans||end=wyjdż|")
     print("--------------------------------------------------------------------")
     resp = input("WYBIERZ: ")
     if  resp == "show":
         get_items(sort_items)
-        print (f"\t\t\tRAZEM KOSZTY(PLN) {sum_price}")
         continue
     elif resp == "add":
             name = input ("NAZWA ARTYKUŁU: ")
             quantity = float(input ("ILOŚĆ: "))
             unit = input ("JEDNOSTKA: ")
             price = float(input ("CENA: "))
-            add_items (name, quantity, unit, price)
-            div = quantity * price
-            sum_list.append (div)
-            sum_price = sum(sum_list)
+            add_items (name, quantity, unit, price)            
             continue
     elif  resp == "sell":
             sell_name = input ("Co sprzedajemy?: ")
@@ -66,6 +64,8 @@ while True:
             sell_quantity = float(input("Podaj ilość: "))
             sell_items (sell_name, sell_quantity)                                          
             continue
+    elif resp == "b":
+            costs_items (items)
     elif resp == "end":
             print ("Zamykam... Do zobaczenia! ;)")
             break
