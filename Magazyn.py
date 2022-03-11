@@ -14,8 +14,8 @@ def  load_items_from_csv():
     with open('Magazyn.csv', newline='') as csvfile:
         csvreader = csv.DictReader(csvfile)
         for i in csvreader:
-            print (i['Name'], i['Quantity'], i['Unit'], i['Unit_price'])
-            
+            items.append ({"Name" : i['Name'], "Quantity" : float(i['Quantity']), "Unit" : i['Unit'], "Unit_price" : float(i['Unit_price'])})
+                   
 def export_items_to_csv():
     with open('Magazyn.csv', mode='w') as csv_file:
         fieldnames = ['Name', 'Quantity', 'Unit', 'Unit_price']
@@ -78,16 +78,15 @@ def sell_items (sell_name, sell_quantity):
             
 if __name__ == "__main__":
     print ("\nWitaj w menadżerze Twojego Magazynu. Co chciałbyś zrobić?")     
-while True:  
-    
+    items.clear()
+    load_items_from_csv()
+while True:      
     print("\n-------------------------------------------------------------------------")
     print ("MENU:|show=pokaż||add=kup||sell=sprzedaj||b=bilans||s=zapisz||end=wyjdż|")
     print("-------------------------------------------------------------------------")
     resp = input("WYBIERZ: ")
-    if  resp == "show":
-        items.clear()
-        load_items_from_csv()
-        #get_items (sort_items)
+    if  resp == "show":       
+        get_items (sort_items)
         continue
     elif resp == "add":
             name = input ("NAZWA ARTYKUŁU: ")
@@ -115,7 +114,7 @@ while True:
     elif resp == "s":
             export_items_to_csv()
             export_sales_to_csv()
-            print ("Zapisuję do pliku...")
+            print ("Zapisuję do pliku...\nI gotowe! ;)")
     elif resp == "end":
             print ("Zamykam... Do zobaczenia! ;)")
             break
