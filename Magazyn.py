@@ -1,3 +1,4 @@
+import csv
 items = [{"Name" : "mleko","Quantity": 10,"Unit": "litr","Unit_price": 2},
         {"Name" : "cukier","Quantity": 10,"Unit": "kg","Unit_price": 4},
         {"Name" : "chleb","Quantity": 10,"Unit": "szt","Unit_price": 5}]
@@ -8,6 +9,28 @@ sold_list = [] #lista sprzedanych tow.
 sub_list = [] #lista zysków
 profit = 0
 cost = 0
+
+def  load_items_from_csv():
+    with open('Magazyn.csv', newline='') as csvfile:
+        csvreader = csv.DictReader(csvfile)
+        for i in csvreader:
+            print (i['Name'], i['Quantity'], i['Unit'], i['Unit_price'])
+            
+def export_items_to_csv():
+    with open('Magazyn.csv', mode='w') as csv_file:
+        fieldnames = ['Name', 'Quantity', 'Unit', 'Unit_price']
+        csvwriter = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        csvwriter.writeheader()
+        for n in items:
+            csvwriter.writerow(n)
+
+def export_sales_to_csv():
+    with open('Magazyn_sold.csv', mode='w') as csv_file:
+        fieldnames = ['Name', 'Quantity', 'Unit', 'Unit_price']
+        csvwriter = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        csvwriter.writeheader()
+        for n in sold_list:
+            csvwriter.writerow(n)
 
 def costs_items (items):
     global cost
@@ -56,12 +79,15 @@ def sell_items (sell_name, sell_quantity):
 if __name__ == "__main__":
     print ("\nWitaj w menadżerze Twojego Magazynu. Co chciałbyś zrobić?")     
 while True:  
-    print("\n--------------------------------------------------------------------")
-    print ("MENU:|show=pokaż||add=kup||sell=sprzedaj||b=bilans||end=wyjdż|")
-    print("--------------------------------------------------------------------")
+    
+    print("\n-------------------------------------------------------------------------")
+    print ("MENU:|show=pokaż||add=kup||sell=sprzedaj||b=bilans||s=zapisz||end=wyjdż|")
+    print("-------------------------------------------------------------------------")
     resp = input("WYBIERZ: ")
     if  resp == "show":
-        get_items(sort_items)
+        items.clear()
+        load_items_from_csv()
+        #get_items (sort_items)
         continue
     elif resp == "add":
             name = input ("NAZWA ARTYKUŁU: ")
@@ -86,6 +112,10 @@ while True:
             costs_items (items)
             get_income (sold_list)
             show_revenue ()
+    elif resp == "s":
+            export_items_to_csv()
+            export_sales_to_csv()
+            print ("Zapisuję do pliku...")
     elif resp == "end":
             print ("Zamykam... Do zobaczenia! ;)")
             break
